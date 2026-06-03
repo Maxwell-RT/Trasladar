@@ -1,11 +1,11 @@
-package com.trabajo.service;
+package com.trabajo.Trasladar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.trabajo.model.EstadoTraslado;
-import com.trabajo.model.Traslado;
-import com.trabajo.repository.TrasladoRepository;
+import com.trabajo.Trasladar.model.EstadoTraslado;
+import com.trabajo.Trasladar.model.Traslado;
+import com.trabajo.Trasladar.repository.TrasladoRepository;
 
 import jakarta.transaction.Transactional;
 

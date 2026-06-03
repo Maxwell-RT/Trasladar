@@ -1,4 +1,4 @@
-package com.trabajo.model;
+package com.trabajo.Trasladar.model;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;

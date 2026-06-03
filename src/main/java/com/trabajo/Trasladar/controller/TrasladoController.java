@@ -1,16 +1,15 @@
-package com.trabajo.controller;
+package com.trabajo.Trasladar.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.trabajo.model.Traslado;
-import com.trabajo.service.TrasladoService;
+import com.trabajo.Trasladar.model.Traslado;
+import com.trabajo.Trasladar.service.TrasladoService;
 
 @RestController
 @RequestMapping("api/v1/Traslado")

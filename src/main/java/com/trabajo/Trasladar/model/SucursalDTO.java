@@ -1,4 +1,4 @@
-package com.trabajo.model;
+package com.trabajo.Trasladar.model;
 
 import lombok.Data;
 
