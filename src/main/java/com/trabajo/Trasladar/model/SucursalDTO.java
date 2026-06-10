@@ -8,5 +8,4 @@ public class SucursalDTO {
     private String direccion;
     private String horario;
 
-
 }

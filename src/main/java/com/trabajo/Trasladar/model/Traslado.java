@@ -1,4 +1,5 @@
 package com.trabajo.Trasladar.model;
+
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,5 @@ public class Traslado {
     private Long idSucursal;
     private String fecha;
     private EstadoTraslado estado;
-
 
 }
