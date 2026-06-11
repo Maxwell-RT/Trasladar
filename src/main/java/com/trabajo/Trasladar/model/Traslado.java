@@ -12,5 +12,8 @@ public class Traslado {
     private Long idSucursal;
     private String fecha;
     private EstadoTraslado estado;
-
+    public void setId(Long id) {
+        this.idTraslado = id;
+    }
+    
 }

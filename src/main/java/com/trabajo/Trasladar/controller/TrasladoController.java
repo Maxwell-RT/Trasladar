@@ -56,9 +56,12 @@ public class TrasladoController {
         return ResponseEntity.ok(trasladoService.crear(traslado));
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Traslado> actualizar(@PathVariable Long id, @RequestBody Traslado traslado) {
-        // Aquí podrías agregar lógica para validar el traslado antes de actualizarlo
+    @PutMapping("/{id}")
+    public ResponseEntity<Traslado> actualizar(
+            @PathVariable Long id,
+            @RequestBody Traslado traslado) {
+
+        traslado.setId(id); // Asegura que el ID del traslado a actualizar sea el correcto
         return ResponseEntity.ok(trasladoService.actualizar(traslado));
     }
 

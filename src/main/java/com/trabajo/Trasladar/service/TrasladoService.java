@@ -1,5 +1,7 @@
 package com.trabajo.Trasladar.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +73,33 @@ public Traslado cancelar(Long id) {
     }
 
 
+public Traslado crear(Traslado traslado) {
+    traslado.setEstado(EstadoTraslado.ESPERA); 
+    return trasladoRepository.save(traslado);
+}
 
+public Traslado actualizar(Traslado traslado) {
+    return trasladoRepository.save(traslado);
+}
 
+public Traslado Eliminarporid(Long id) {
+    Traslado traslado = obtener(id);
+    trasladoRepository.delete(traslado);
+    return traslado;
+}
+public List<Traslado> listar() {
+    return trasladoRepository.findAll();
+}
+
+public Traslado finalizar(Long id) {
+    Traslado traslado = obtener(id);
+    validarEstado(traslado, EstadoTraslado.APROBADO);
+    traslado.setEstado(EstadoTraslado.FINALIZADO);
+    return trasladoRepository.save(traslado);
+}
+
+public void eliminar(Long id) {
+    Traslado traslado = obtener(id);
+    trasladoRepository.delete(traslado);
+}
 }
