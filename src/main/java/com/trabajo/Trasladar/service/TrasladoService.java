@@ -2,6 +2,7 @@ package com.trabajo.Trasladar.service;
 
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,8 +79,8 @@ public Traslado crear(Traslado traslado) {
     return trasladoRepository.save(traslado);
 }
 
-public Traslado actualizar(Traslado traslado) {
-    return trasladoRepository.save(traslado);
+public Traslado actualizar(Long id) {
+    return trasladoRepository.save(obtener(id));
 }
 
 public Traslado Eliminarporid(Long id) {
@@ -101,5 +102,16 @@ public Traslado finalizar(Long id) {
 public void eliminar(Long id) {
     Traslado traslado = obtener(id);
     trasladoRepository.delete(traslado);
+}
+
+
+public Traslado listarPorId(Long id) {
+    return obtener(id);
+}
+
+
+public @Nullable Traslado actualizar(Long id, Traslado traslado) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'actualizar'");
 }
 }
