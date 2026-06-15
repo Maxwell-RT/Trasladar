@@ -15,5 +15,6 @@ public class Traslado {
     public void setId(Long id) {
         this.idTraslado = id;
     }
-    
+    private Long fechaHora;
+    private String motivo;
 }

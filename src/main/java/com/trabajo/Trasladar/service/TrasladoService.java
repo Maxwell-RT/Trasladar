@@ -109,9 +109,4 @@ public Traslado listarPorId(Long id) {
     return obtener(id);
 }
 
-
-public @Nullable Traslado actualizar(Long id, Traslado traslado) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'actualizar'");
-}
 }
