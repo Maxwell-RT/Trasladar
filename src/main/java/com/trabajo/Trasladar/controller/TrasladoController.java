@@ -29,10 +29,6 @@ public class TrasladoController {
     public ResponseEntity<?> listarTraslados() {
         return ResponseEntity.ok(trasladoService.listar());
     }
-    @GetMapping("/listarPorId/{id}")
-    public ResponseEntity<?> listarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(trasladoService.listarPorId(id));
-    }
     @PostMapping("/crear")
     public ResponseEntity<?> crearTraslado(@RequestBody Traslado traslado) {
         return ResponseEntity.ok(trasladoService.crear(traslado));
