@@ -46,16 +46,6 @@ public class TrasladoService {
         }
     }
 
-    public Traslado rechazar(Long id, String motivo) {
-
-        Traslado traslado = obtener(id);
-
-        validarEstado(traslado, EstadoTraslado.ESPERA);
-
-        traslado.setEstado(EstadoTraslado.RECHAZADO);
-        return trasladoRepository.save(traslado);
-    }
-
     public Traslado cancelar(Long id) {
 
         Traslado traslado = obtener(id);
@@ -118,4 +108,19 @@ public class TrasladoService {
         return trasladoRepository.save(traslado);
     }
 
+
+    public Traslado rechazar(Long id, String motivo) {
+
+    if (motivo == null || motivo.isBlank()) {
+        throw new IllegalArgumentException("El motivo de rechazo es obligatorio");
+    }
+
+    Traslado traslado = obtener(id);
+
+    validarEstado(traslado, EstadoTraslado.ESPERA);
+
+    traslado.setEstado(EstadoTraslado.RECHAZADO);
+
+    return trasladoRepository.save(traslado);
+}
 }
