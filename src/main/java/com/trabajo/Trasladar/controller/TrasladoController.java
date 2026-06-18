@@ -1,5 +1,6 @@
 package com.trabajo.Trasladar.controller;
 
+import com.trabajo.Trasladar.model.SucursalDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,6 @@ import com.trabajo.Trasladar.service.TrasladoService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-
 
 @RestController
 @RequestMapping("api/v1/Traslado")
@@ -30,6 +30,7 @@ public class TrasladoController {
     public ResponseEntity<?> listarTraslados() {
         return ResponseEntity.ok(trasladoService.listar());
     }
+
     @PostMapping("/crear")
     public ResponseEntity<?> crearTraslado(@RequestBody Traslado traslado) {
         return ResponseEntity.ok(trasladoService.crear(traslado));
@@ -38,10 +39,6 @@ public class TrasladoController {
     @PutMapping("/aprobar/{id}")
     public ResponseEntity<?> aprobarTraslado(@PathVariable Long id) {
         return ResponseEntity.ok(trasladoService.aprobar(id));
-    }
-    @PutMapping("/rechazar/{id}")
-    public ResponseEntity<?> rechazarTraslado(@PathVariable Long id, @RequestBody String motivo) {
-        return ResponseEntity.ok(trasladoService.rechazar(id, motivo));
     }
 
     @PutMapping("/eliminar/{id}")

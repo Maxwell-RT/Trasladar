@@ -46,6 +46,7 @@ public class TrasladoService {
         }
     }
 
+
     public Traslado rechazar(Long id, String motivo) {
 
         if (motivo == null || motivo.isBlank()) {
@@ -59,6 +60,7 @@ public class TrasladoService {
         traslado.setEstado(EstadoTraslado.RECHAZADO);
         return trasladoRepository.save(traslado);
     }
+
 
     public Traslado cancelar(Long id) {
 
