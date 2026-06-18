@@ -2,10 +2,8 @@ package com.trabajo.Trasladar.service;
 
 import java.util.List;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.trabajo.Trasladar.model.EstadoTraslado;
 import com.trabajo.Trasladar.model.Traslado;
 import com.trabajo.Trasladar.repository.TrasladoRepository;
@@ -21,15 +19,13 @@ public class TrasladoService {
     public TrasladoService(TrasladoRepository repository) {
         this.trasladoRepository = repository;
     }
-    
 
     public Traslado obtener(Long id) {
-
         if (id == null) {
             throw new IllegalArgumentException("El id no puede ser null");
         }
-        return obtener(id);
-
+        return trasladoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Traslado no encontrado: " + id));
     }
 
     public Traslado aprobar(Long id) {
@@ -51,6 +47,10 @@ public class TrasladoService {
     }
 
     public Traslado rechazar(Long id, String motivo) {
+
+        if (motivo == null || motivo.isBlank()) {
+            throw new IllegalArgumentException("El motivo de rechazo es obligatorio");
+        }
 
         Traslado traslado = obtener(id);
 
@@ -103,6 +103,20 @@ public class TrasladoService {
 
     public Traslado listarPorId(Long id) {
         return obtener(id);
+    }
+
+    public Traslado asignarSucursales(Long id, Long idSucursalOrigen, Long idSucursalDestino) {
+        Traslado traslado = obtener(id);
+
+        if (idSucursalOrigen == null || idSucursalDestino == null) {
+            throw new IllegalArgumentException("Ambas sucursales son obligatorias");
+        }
+        if (idSucursalOrigen.equals(idSucursalDestino)) {
+            throw new IllegalArgumentException("La sucursal de origen y destino no pueden ser la misma");
+        }
+        traslado.setIdSucursalOrigen(idSucursalOrigen);
+        traslado.setIdSucursalDestino(idSucursalDestino);
+        return trasladoRepository.save(traslado);
     }
 
 }

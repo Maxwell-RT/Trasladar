@@ -8,6 +8,5 @@ public class SucursalDTO {
     private String direccion;
     private String horario;
     private Long hora;
-    private Long idSucursalOrigen;
-    private Long idSucursalDestino;
+    
 }
