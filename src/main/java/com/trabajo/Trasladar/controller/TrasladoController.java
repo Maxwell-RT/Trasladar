@@ -1,6 +1,5 @@
 package com.trabajo.Trasladar.controller;
 
-import com.trabajo.Trasladar.model.SucursalDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
