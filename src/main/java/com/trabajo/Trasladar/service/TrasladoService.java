@@ -77,9 +77,16 @@ public class TrasladoService {
         return trasladoRepository.save(traslado);
     }
 
-    public Traslado actualizar(Long id) {
-        return trasladoRepository.save(obtener(id));
-    }
+    public Traslado actualizar(Long id, Traslado datosActualizados) {
+    Traslado traslado = obtener(id);
+    traslado.setIdSucursalOrigen(datosActualizados.getIdSucursalOrigen());
+    traslado.setIdSucursalDestino(datosActualizados.getIdSucursalDestino());
+    traslado.setFechaHora(datosActualizados.getFechaHora());
+    traslado.setMotivo(datosActualizados.getMotivo());
+    return trasladoRepository.save(traslado);
+}
+
+
 
     public Traslado Eliminarporid(Long id) {
         Traslado traslado = obtener(id);

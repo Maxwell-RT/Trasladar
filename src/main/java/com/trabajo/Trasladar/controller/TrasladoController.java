@@ -52,9 +52,9 @@ public class TrasladoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarTraslado(@PathVariable Long id, @RequestBody Traslado traslado) {
-        return ResponseEntity.ok(trasladoService.actualizar(id));
-    }
+public ResponseEntity<?> actualizarTraslado(@PathVariable Long id, @RequestBody Traslado traslado) {
+    return ResponseEntity.ok(trasladoService.actualizar(id, traslado));
+}
 
 @PutMapping("/asignarSucursales/{id}")
 public ResponseEntity<?> asignarSucursales(
