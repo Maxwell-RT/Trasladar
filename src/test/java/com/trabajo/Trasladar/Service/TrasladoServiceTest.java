@@ -1,23 +1,174 @@
 package com.trabajo.Trasladar.Service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.trabajo.Trasladar.TrasladarApplication;
+import com.trabajo.Trasladar.model.EstadoTraslado;
+import com.trabajo.Trasladar.model.Traslado;
+import com.trabajo.Trasladar.repository.TrasladoRepository;
+import com.trabajo.Trasladar.service.TrasladoService;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 public class TrasladoServiceTest {
 
-    @Test
-    void contextLoads() {
+    @Mock
+    private TrasladoRepository trasladoRepository;
+
+    @InjectMocks
+    private TrasladoService trasladoService;
+
+    private Traslado trasladoEjemplo;
+
+    @BeforeEach
+    void setup() {
+        trasladoEjemplo = new Traslado();
+        trasladoEjemplo.setId(1L);
+        trasladoEjemplo.setIdSucursalOrigen(10L);
+        trasladoEjemplo.setIdSucursalDestino(20L);
+        trasladoEjemplo.setFechaHora(1700000000L);
+        trasladoEjemplo.setEstado(EstadoTraslado.ESPERA);
+        trasladoEjemplo.setMotivo("Traslado de insumos médicos");
     }
 
     @Test
-    void mainClassExists() {
-        assertNotNull(TrasladarApplication.class);
+    void crear_deberiaAsignarEstadoEsperaYGuardar() {
+        when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
+
+        Traslado resultado = trasladoService.crear(trasladoEjemplo);
+
+        assertEquals(EstadoTraslado.ESPERA, resultado.getEstado());
+        assertNotNull(resultado);
+        verify(trasladoRepository, times(1)).save(trasladoEjemplo);
     }
 
+    @Test
+    void obtener_deberiaRetornarTrasladoCuandoExiste() {
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+
+        Traslado resultado = trasladoService.obtener(1L);
+
+        assertNotNull(resultado);
+        assertEquals(1L, resultado.getIdTraslado());
+        assertEquals(10L, resultado.getIdSucursalOrigen());
+        assertEquals(20L, resultado.getIdSucursalDestino());
+    }
+
+    @Test
+    void obtener_deberiaLanzarExcepcionCuandoIdEsNull() {
+        assertThrows(IllegalArgumentException.class, () -> trasladoService.obtener(null));
+    }
+
+    @Test
+    void obtener_deberiaLanzarExcepcionCuandoNoExiste() {
+        when(trasladoRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> trasladoService.obtener(999L));
+    }
+
+    @Test
+    void aprobar_deberiaActualizarEstadoAAprobado() {
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+        when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
+
+        Traslado resultado = trasladoService.aprobar(1L);
+
+        assertEquals(EstadoTraslado.APROBADO, resultado.getEstado());
+        verify(trasladoRepository, times(1)).save(trasladoEjemplo);
+    }
+
+    @Test
+    void aprobar_deberiaLanzarExcepcionSiNoEstaEnEspera() {
+        trasladoEjemplo.setEstado(EstadoTraslado.APROBADO); // ya está aprobado
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+
+        assertThrows(IllegalStateException.class, () -> trasladoService.aprobar(1L));
+    }
+
+    @Test
+    void rechazar_deberiaActualizarEstadoARechazado() {
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+        when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
+
+        Traslado resultado = trasladoService.rechazar(1L, "Sucursal destino sin capacidad");
+
+        assertEquals(EstadoTraslado.RECHAZADO, resultado.getEstado());
+        verify(trasladoRepository, times(1)).save(trasladoEjemplo);
+    }
+
+    @Test
+    void rechazar_deberiaLanzarExcepcionSiMotivoEsVacio() {
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> trasladoService.rechazar(1L, ""));
+    }
+
+    @Test
+    void cancelar_deberiaActualizarEstadoACancelado() {
+        trasladoEjemplo.setEstado(EstadoTraslado.APROBADO);
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+        when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
+
+        Traslado resultado = trasladoService.cancelar(1L);
+
+        assertEquals(EstadoTraslado.CANCELADO, resultado.getEstado());
+        verify(trasladoRepository, times(1)).save(trasladoEjemplo);
+    }
+
+    @Test
+    void cancelar_deberiaLanzarExcepcionSiNoEstaAprobado() {
+        // sigue en ESPERA, no se puede cancelar
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+
+        assertThrows(IllegalStateException.class, () -> trasladoService.cancelar(1L));
+    }
+
+    @Test
+    void finalizar_deberiaActualizarEstadoAFinalizado() {
+        trasladoEjemplo.setEstado(EstadoTraslado.APROBADO);
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+        when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
+
+        Traslado resultado = trasladoService.finalizar(1L);
+
+        assertEquals(EstadoTraslado.FINALIZADO, resultado.getEstado());
+        verify(trasladoRepository, times(1)).save(trasladoEjemplo);
+    }
+
+    @Test
+    void eliminar_deberiaLlamarDeleteDelRepositorio() {
+        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
+
+        trasladoService.eliminar(1L);
+
+        verify(trasladoRepository, times(1)).delete(trasladoEjemplo);
+    }
+
+    @Test
+    void listar_deberiaRetornarTodosLosTraslados() {
+        Traslado t2 = new Traslado();
+        t2.setId(2L);
+        t2.setEstado(EstadoTraslado.APROBADO);
+        t2.setMotivo("Traslado de equipos de radiología");
+
+        when(trasladoRepository.findAll()).thenReturn(Arrays.asList(trasladoEjemplo, t2));
+
+        List<Traslado> resultado = trasladoService.listar();
+
+        assertEquals(2, resultado.size());
+        assertEquals(EstadoTraslado.ESPERA, resultado.get(0).getEstado());
+        assertEquals(EstadoTraslado.APROBADO, resultado.get(1).getEstado());
+    }
 }
