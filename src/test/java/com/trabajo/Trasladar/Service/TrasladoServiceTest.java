@@ -43,7 +43,7 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void crear_deberiaAsignarEstadoEsperaYGuardar() {
+    void Asignarestadoyguardar() {
         when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
 
         Traslado resultado = trasladoService.crear(trasladoEjemplo);
@@ -54,7 +54,7 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void obtener_deberiaRetornarTrasladoCuandoExiste() {
+    void retornarEstadoexistente() {
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
 
         Traslado resultado = trasladoService.obtener(1L);
@@ -66,19 +66,19 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void obtener_deberiaLanzarExcepcionCuandoIdEsNull() {
+    void Obtenernull() {
         assertThrows(IllegalArgumentException.class, () -> trasladoService.obtener(null));
     }
 
     @Test
-    void obtener_deberiaLanzarExcepcionCuandoNoExiste() {
+    void CasoEstadoNoExiste() {
         when(trasladoRepository.findById(999L)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> trasladoService.obtener(999L));
     }
 
     @Test
-    void aprobar_deberiaActualizarEstadoAAprobado() {
+    void Aprobar() {
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
         when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
 
@@ -89,15 +89,15 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void aprobar_deberiaLanzarExcepcionSiNoEstaEnEspera() {
-        trasladoEjemplo.setEstado(EstadoTraslado.APROBADO); // ya está aprobado
+    void AprobaroExcepcion() {
+        trasladoEjemplo.setEstado(EstadoTraslado.APROBADO); // ya fue aprobado
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
 
         assertThrows(IllegalStateException.class, () -> trasladoService.aprobar(1L));
     }
 
     @Test
-    void rechazar_deberiaActualizarEstadoARechazado() {
+    void ActualizarArechazado() {
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
         when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
 
@@ -108,7 +108,7 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void rechazar_deberiaLanzarExcepcionSiMotivoEsVacio() {
+    void MotivoRechazar() {
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
 
         assertThrows(IllegalArgumentException.class,
@@ -116,7 +116,7 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void cancelar_deberiaActualizarEstadoACancelado() {
+    void actualizarAestadoCancelado() {
         trasladoEjemplo.setEstado(EstadoTraslado.APROBADO);
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
         when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
@@ -128,15 +128,14 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void cancelar_deberiaLanzarExcepcionSiNoEstaAprobado() {
-        // sigue en ESPERA, no se puede cancelar
+    void cancelarEnEspera() {
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
 
         assertThrows(IllegalStateException.class, () -> trasladoService.cancelar(1L));
     }
 
     @Test
-    void finalizar_deberiaActualizarEstadoAFinalizado() {
+    void PonerEstadoFinalizado() {
         trasladoEjemplo.setEstado(EstadoTraslado.APROBADO);
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
         when(trasladoRepository.save(any(Traslado.class))).thenReturn(trasladoEjemplo);
@@ -148,7 +147,7 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void eliminar_deberiaLlamarDeleteDelRepositorio() {
+    void DeleteTraslado() {
         when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
 
         trasladoService.eliminar(1L);
@@ -157,7 +156,7 @@ public class TrasladoServiceTest {
     }
 
     @Test
-    void listar_deberiaRetornarTodosLosTraslados() {
+    void ListarTodos() {
         Traslado t2 = new Traslado();
         t2.setId(2L);
         t2.setEstado(EstadoTraslado.APROBADO);
