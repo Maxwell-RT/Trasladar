@@ -38,7 +38,7 @@ public class TrasladoControllerIT {
         Traslado t = new Traslado();
         t.setId(id);
         t.setEstado(estado);
-        t.setMotivo(motivo);
+        t.setMotivo("Envio de suministros");
         t.setIdSucursalOrigen(10L);
         t.setIdSucursalDestino(20L);
         t.setFechaHora(1700000000L);
@@ -59,6 +59,8 @@ public class TrasladoControllerIT {
                 .andExpect(jsonPath("$.idSucursalDestino").value(20L))
                 .andExpect(jsonPath("$.motivo").value("Traslado de insumos médicos"))
                 .andExpect(jsonPath("$.estado").value("ESPERA"));
+
+        
     }
 
     @Test
