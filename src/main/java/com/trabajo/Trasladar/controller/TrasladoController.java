@@ -2,6 +2,7 @@ package com.trabajo.Trasladar.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class TrasladoController {
         return ResponseEntity.ok(trasladoService.aprobar(id));
     }
 
-    @PutMapping("/eliminar/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarTraslado(@PathVariable Long id) {
         trasladoService.eliminar(id);
         return ResponseEntity.noContent().build();
@@ -52,15 +53,21 @@ public class TrasladoController {
     }
 
     @PutMapping("/actualizar/{id}")
-public ResponseEntity<?> actualizarTraslado(@PathVariable Long id, @RequestBody Traslado traslado) {
-    return ResponseEntity.ok(trasladoService.actualizar(id, traslado));
-}
+    public ResponseEntity<?> actualizarTraslado(@PathVariable Long id, @RequestBody Traslado traslado) {
+        return ResponseEntity.ok(trasladoService.actualizar(id, traslado));
+    }
 
-@PutMapping("/asignarSucursales/{id}")
-public ResponseEntity<?> asignarSucursales(
-        @PathVariable Long id,
-        @RequestParam Long idSucursalOrigen,
-        @RequestParam Long idSucursalDestino) {
-    return ResponseEntity.ok(trasladoService.asignarSucursales(id, idSucursalOrigen, idSucursalDestino));
-}
+    @PutMapping("/asignarSucursales/{id}")
+    public ResponseEntity<?> asignarSucursales(
+            @PathVariable Long id,
+            @RequestParam Long idSucursalOrigen,
+            @RequestParam Long idSucursalDestino) {
+        return ResponseEntity.ok(trasladoService.asignarSucursales(id, idSucursalOrigen, idSucursalDestino));
+    }
+
+    @PutMapping("/rechazar/{id}")
+    public ResponseEntity<?> rechazarTraslado(@PathVariable Long id, @RequestBody Traslado traslado) {
+        return ResponseEntity.ok(trasladoService.rechazar(id, traslado.getMotivo()));
+    }
+
 }

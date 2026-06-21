@@ -21,6 +21,7 @@ import com.trabajo.Trasladar.model.Traslado;
 
 import java.util.Arrays;
 
+
 @WebMvcTest(TrasladoController.class)
 @ActiveProfiles("test")
 public class TrasladoControllerTest {

@@ -7,9 +7,7 @@ import com.trabajo.Trasladar.model.Traslado;
 import com.trabajo.Trasladar.service.TrasladoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,7 +36,7 @@ public class TrasladoControllerIT {
         Traslado t = new Traslado();
         t.setId(id);
         t.setEstado(estado);
-        t.setMotivo("Envio de suministros");
+        t.setMotivo(motivo); // usa el parámetro
         t.setIdSucursalOrigen(10L);
         t.setIdSucursalDestino(20L);
         t.setFechaHora(1700000000L);
