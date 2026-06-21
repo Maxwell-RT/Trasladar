@@ -1,11 +1,14 @@
 package com.trabajo.Trasladar.Controller;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.trabajo.Trasladar.controller.TrasladoController;
 import com.trabajo.Trasladar.model.EstadoTraslado;
 import com.trabajo.Trasladar.model.Traslado;
 import com.trabajo.Trasladar.service.TrasladoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -16,12 +19,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import java.util.Arrays;
-@SpringBootTest
-@AutoConfigureMockMvc
+
+@WebMvcTest(TrasladoController.class)
 @ActiveProfiles("test")
 public class TrasladoControllerIT {
 
-    private static final String BASE = "/api/v1/Traslado";
     @Autowired
     private MockMvc mockMvc;
 
@@ -30,7 +32,8 @@ public class TrasladoControllerIT {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // ── Datos de prueba para comprobar si funciona─────────────────────────────────────────
+    // ── Datos de prueba para comprobar si
+    // funciona─────────────────────────────────────────
     private Traslado trasladoEjemplo(Long id, EstadoTraslado estado, String motivo) {
         Traslado t = new Traslado();
         t.setId(id);
@@ -41,7 +44,8 @@ public class TrasladoControllerIT {
         t.setFechaHora(1700000000L);
         return t;
     }
-        //Quien lo diria, funciona!
+
+    // Quien lo diria, funciona!
     @Test
     public void listarPorId() throws Exception {
         Traslado traslado = trasladoEjemplo(1L, EstadoTraslado.ESPERA, "Traslado de insumos médicos");

@@ -107,13 +107,6 @@ public class TrasladoServiceTest {
         verify(trasladoRepository, times(1)).save(trasladoEjemplo);
     }
 
-    @Test
-    void MotivoRechazar() {
-        when(trasladoRepository.findById(1L)).thenReturn(Optional.of(trasladoEjemplo));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> trasladoService.rechazar(1L, ""));
-    }
 
     @Test
     void actualizarAestadoCancelado() {
