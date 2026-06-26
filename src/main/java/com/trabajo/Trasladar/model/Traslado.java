@@ -1,10 +1,9 @@
 package com.trabajo.Trasladar.model;
 
-import org.springframework.data.annotation.Id;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Traslado {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTraslado;
@@ -23,7 +23,7 @@ public class Traslado {
     private Long fechaHora;
     private String motivo;
 
-public void setId(Long id) {
+    public void setId(Long id) {
         this.idTraslado = id;
     }
 }
